@@ -150,7 +150,7 @@
 | issue_date | 발행일 | Date |
 | due_date | 유효기간 | Date |
 | status | 견적서 상태 (초안/발행됨) | Select |
-| items | 견적 항목 목록 (품목, 수량, 단가) | 하위 페이지 또는 Table |
+| items | 견적 항목 목록 (품목, 수량, 단가) | 페이지 본문 인라인 Table 블록 |
 | tax_rate | 부가세율 (기본 10%) | Number |
 | notes | 특이사항 및 지불 조건 | Text |
 | sender_name | 발행자 이름/회사명 | Text |
@@ -206,7 +206,9 @@
 ### 인증
 
 - **환경변수 기반 단순 패스워드 인증** - `ADMIN_PASSWORD` 환경변수와 비교
-- **Next.js Cookies API** - 로그인 세션 유지 (서버 액션 기반)
+- **서명된 쿠키** - `jose` 라이브러리로 JWT 서명 후 httpOnly 쿠키에 저장
+  - 단순 문자열 쿠키는 위조 가능하므로 JWT 서명 방식 사용
+  - Next.js Server Action에서 발급, `cookies()` API로 검증
 
 ### 배포 & 호스팅
 
@@ -228,8 +230,17 @@ Notion DB 구조:
 - API 키 → 환경변수 NOTION_API_KEY
 - 견적서 페이지 ID → URL 파라미터 [id]
 
-서버 컴포넌트에서 직접 Notion API 호출 (API 키 노출 없음):
-/invoice/[id] → Server Component → notionClient.pages.retrieve(id)
+서버 컴포넌트에서 직접 Notion API 호출 (API 키 클라이언트 노출 없음)
+
+견적서 목록 조회:
+  databases.query(NOTION_DATABASE_ID) → 페이지 목록 + 속성 반환
+
+견적서 상세 조회 (3단계 호출):
+  1. pages.retrieve(pageId)              → 제목, 클라이언트명, 발행일 등 속성
+  2. blocks.children.list(pageId)        → 페이지 본문 블록 목록 (table 블록 ID 획득)
+  3. blocks.children.list(tableBlockId)  → table_row 블록들 (견적 항목 데이터)
+
+금액 계산: amount = quantity × unit_price (프론트엔드에서 계산, Notion 수식 미사용)
 ```
 
 ### URL 구조
