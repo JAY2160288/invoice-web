@@ -9,8 +9,13 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+    <div className="bg-background relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
+      {/* Decorative background elements */}
+      <div className="bg-primary/5 pointer-events-none absolute inset-0 z-0" />
+      <div className="bg-primary/10 pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full blur-3xl" />
+      <div className="bg-primary/5 pointer-events-none absolute -right-24 -bottom-24 h-96 w-96 rounded-full blur-3xl" />
+
+      <div className="relative z-10 w-full max-w-md space-y-8">
         <LoginForm />
       </div>
     </div>

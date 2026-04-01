@@ -15,9 +15,21 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'NextJS Starter - 모던 웹 스타터킷',
-  description:
-    'Next.js 15, TypeScript, TailwindCSS, ShadcnUI로 구축된 프로덕션 준비가 완료된 웹 애플리케이션 스타터킷',
+  title: {
+    default: '노션 견적서 뷰어',
+    template: '%s | 노션 견적서',
+  },
+  description: 'Notion 데이터베이스와 연동된 간편한 견적서 관리 및 공유 서비스',
+  openGraph: {
+    title: '노션 견적서 뷰어',
+    description:
+      'Notion 데이터베이스와 연동된 간편한 견적서 관리 및 공유 서비스',
+    type: 'website',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default function RootLayout({

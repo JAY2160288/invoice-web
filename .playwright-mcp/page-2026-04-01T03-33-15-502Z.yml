@@ -1,0 +1,29 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e28]:
+    - banner [ref=e29]:
+      - generic [ref=e31]:
+        - heading "견적서 관리" [level=1] [ref=e32]
+        - button "로그아웃" [ref=e33]:
+          - img
+          - text: 로그아웃
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - heading "견적서 목록" [level=2] [ref=e37]
+          - paragraph [ref=e38]: 총 0개의 견적서
+        - generic [ref=e39]:
+          - paragraph [ref=e40]: 등록된 견적서가 없습니다
+          - paragraph [ref=e41]: Notion DB에 견적서를 추가하면 여기에 표시됩니다.
+  - region "Notifications alt+T"
+  - generic [ref=e21] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e22]:
+      - img [ref=e23]
+    - generic [ref=e42]:
+      - button "Open issues overlay" [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]: "0"
+          - generic [ref=e46]: "1"
+        - generic [ref=e47]: Issue
+      - button "Collapse issues badge" [ref=e48]:
+        - img [ref=e49]
+  - alert [ref=e16]: 견적서 목록

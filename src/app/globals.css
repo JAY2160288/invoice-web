@@ -120,3 +120,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  @page {
+    margin: 20mm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+}
