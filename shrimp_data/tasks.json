@@ -1,0 +1,192 @@
+{
+  "tasks": [
+    {
+      "id": "80f68dc3-52a4-4988-82e6-8dceaf86cf4d",
+      "name": "Loading UI / Suspense 경계 적용",
+      "description": "대시보드와 견적서 뷰어 페이지에 Suspense 경계와 Skeleton UI를 추가하여 Notion API 데이터 로딩 중 사용자 경험을 개선한다. 현재 두 페이지 모두 서버 컴포넌트에서 직접 await로 데이터를 가져오므로, 응답 전까지 빈 화면이 표시된다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/dashboard/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "Suspense 경계 추가"
+        },
+        {
+          "path": "src/app/invoice/[id]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "Suspense 경계 추가"
+        },
+        {
+          "path": "src/components/dashboard/invoice-table-skeleton.tsx",
+          "type": "CREATE",
+          "description": "대시보드 Skeleton UI"
+        },
+        {
+          "path": "src/components/invoice/invoice-view-skeleton.tsx",
+          "type": "CREATE",
+          "description": "뷰어 Skeleton UI"
+        }
+      ],
+      "implementationGuide": "1. src/app/dashboard/page.tsx: InvoiceTable을 별도 async 서버 컴포넌트로 분리 후 Suspense로 감싸기\n2. src/app/invoice/[id]/page.tsx: InvoiceView 로딩 중 Skeleton 표시\n3. src/components/dashboard/invoice-table-skeleton.tsx 생성: shadcn Skeleton으로 테이블 행 4개 모사\n4. src/components/invoice/invoice-view-skeleton.tsx 생성: 헤더/테이블/합계 영역 Skeleton",
+      "verificationCriteria": "1. 브라우저에서 느린 네트워크 조건 시뮬레이션 시 Skeleton UI 표시\n2. 데이터 로드 완료 후 실제 컨텐츠로 자연스럽게 전환\n3. npm run build 성공",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "f840f30b-12dc-4de2-a468-4181ed96022b",
+      "name": "Items DB description 필드 추가",
+      "description": "현재 items DB에는 description(항목 상세 설명) 속성이 없다. Notion items DB에 description(rich_text) 속성을 추가하고, 파서와 타입, 뷰어 UI에서 해당 필드를 표시하도록 한다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/types/invoice.ts",
+          "type": "REFERENCE",
+          "description": "InvoiceItem 타입"
+        },
+        {
+          "path": "src/lib/notion/parsers.ts",
+          "type": "TO_MODIFY",
+          "description": "parseRelationItems description 파싱"
+        },
+        {
+          "path": "src/components/invoice/invoice-items-table.tsx",
+          "type": "TO_MODIFY",
+          "description": "description 표시 UI"
+        }
+      ],
+      "implementationGuide": "1. Notion items DB에 description(rich_text) 속성 추가 (Notion UI 또는 API로)\n2. src/lib/types/invoice.ts: InvoiceItem.description을 optional string으로 유지 확인\n3. src/lib/notion/parsers.ts: parseRelationItems에서 description 필드 파싱 추가\n   - getRichText(p['description']) 또는 getRichText(p['설명'])\n4. src/components/invoice/invoice-items-table.tsx: description 있을 때 항목명 아래 작은 텍스트로 표시\n5. 테스트 데이터 일부에 description 값 추가",
+      "verificationCriteria": "1. Notion items DB에 description 속성 존재\n2. description이 있는 항목은 뷰어에서 품목명 아래 회색 소문자로 표시\n3. description 없는 항목은 이전과 동일하게 표시",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "17b6230e-f6b4-4ca8-b770-bb28bd54f877",
+      "name": "Dashboard 합계금액 Items 기반 재계산",
+      "description": "현재 대시보드 목록의 총금액은 invoice DB의 Invoice Amount 필드를 그대로 사용한다. items relation 데이터와 불일치할 수 있으므로, getInvoiceList에서 각 invoice의 items를 함께 조회하여 실제 합산 금액을 표시하도록 개선한다. 단, N+1 문제를 고려해 병렬 처리로 구현한다.",
+      "notes": "Notion API 호출 수가 늘어나므로 캐싱 태스크와 함께 적용하면 효과적",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/queries.ts",
+          "type": "TO_MODIFY",
+          "description": "getInvoiceList items 병렬 조회"
+        },
+        {
+          "path": "src/lib/notion/parsers.ts",
+          "type": "TO_MODIFY",
+          "description": "목록 합계 계산"
+        }
+      ],
+      "implementationGuide": "1. src/lib/notion/queries.ts: getInvoiceList 수정\n   - 각 invoice 페이지 ID 목록 추출 후 Promise.all로 items 병렬 조회\n   - items DB를 invoice ID 배열 OR filter로 한 번에 조회 (Notion API는 개별 filter만 지원하므로 Promise.all 방식)\n2. src/lib/notion/parsers.ts: parseInvoiceListItem에 items 합계 계산 로직 추가\n3. Invoice Amount 필드는 fallback으로만 사용 (items 없을 때)",
+      "verificationCriteria": "1. 대시보드 총금액이 items 단가×수량 합산과 일치\n2. items 없는 invoice는 0 또는 Invoice Amount fallback 표시\n3. 응답 속도 허용 범위 내 (Promise.all 병렬 처리)",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "eb339c95-8052-497d-bd7a-2cd4abec8df7",
+      "name": "Notion API 응답 캐싱 전략 적용",
+      "description": "현재 모든 Notion API 호출이 매 요청마다 실행된다. Next.js의 unstable_cache를 사용해 견적서 목록과 상세 데이터를 캐싱하고, revalidate 주기를 설정하여 불필요한 API 호출을 줄인다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/notion/queries.ts",
+          "type": "TO_MODIFY",
+          "description": "unstable_cache 적용"
+        }
+      ],
+      "implementationGuide": "1. src/lib/notion/queries.ts 수정\n   - import { unstable_cache } from 'next/cache'\n   - getInvoiceList를 unstable_cache로 감싸기: revalidate 60초\n   - getInvoice를 unstable_cache로 감싸기: revalidate 30초, key에 pageId 포함\n2. 캐시 무효화가 필요한 경우를 위해 revalidatePath 또는 revalidateTag 패턴 문서화\n   - 현재 MVP에서는 수동 무효화 불필요 (발행자가 Notion에서 수정 후 자동 갱신)",
+      "verificationCriteria": "1. 첫 요청 후 재요청 시 Notion API 호출 없이 캐시에서 응답\n2. 캐시 TTL 이후 자동 갱신\n3. npm run build 성공",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "fd7cb625-f5c7-4119-9cc9-737925f09d76",
+      "name": "모바일 반응형 대시보드 개선",
+      "description": "현재 대시보드 테이블은 좁은 화면에서 가로 스크롤이 발생한다. 모바일(768px 미만)에서는 테이블 대신 카드 형태로 각 견적서를 표시하도록 개선한다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/components/dashboard/invoice-table.tsx",
+          "type": "TO_MODIFY",
+          "description": "모바일 카드 레이아웃 추가"
+        }
+      ],
+      "implementationGuide": "1. src/components/dashboard/invoice-table.tsx 수정\n   - md: 이상에서 기존 Table 컴포넌트 표시\n   - md: 미만에서 카드 리스트 표시 (각 카드: 제목, 클라이언트명, 발행일, 총금액, 상태 뱃지, 액션 버튼)\n2. 카드 레이아웃: shadcn Card 컴포넌트 활용\n3. 빈 상태(Empty State)도 동일하게 반응형 처리",
+      "verificationCriteria": "1. 모바일(375px) 너비에서 카드 형태로 표시\n2. 태블릿/데스크탑(768px+)에서 기존 테이블 표시\n3. URL 복사, 미리보기 버튼 모바일에서 동작",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "85a05c99-6ac7-4dbd-976d-8dc4bbcc9e3b",
+      "name": "Vercel 배포 설정 및 SEO 메타데이터",
+      "description": "프로덕션 배포를 위한 Vercel 설정과 각 페이지의 SEO 메타데이터를 완성한다. 환경변수 목록 정리, vercel.json 보안 헤더 설정, 페이지별 dynamic metadata 구현을 포함한다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "vercel.json",
+          "type": "CREATE",
+          "description": "Vercel 배포 설정 및 보안 헤더"
+        },
+        {
+          "path": ".env.example",
+          "type": "CREATE",
+          "description": "환경변수 예시 파일"
+        },
+        {
+          "path": "src/app/layout.tsx",
+          "type": "TO_MODIFY",
+          "description": "기본 메타데이터"
+        },
+        {
+          "path": "src/app/invoice/[id]/page.tsx",
+          "type": "TO_MODIFY",
+          "description": "동적 메타데이터"
+        }
+      ],
+      "implementationGuide": "1. vercel.json 생성: 보안 헤더(X-Frame-Options, X-Content-Type-Options, Referrer-Policy)\n2. src/app/invoice/[id]/page.tsx: generateMetadata 추가\n   - 견적서 제목과 클라이언트명을 title/description으로 사용\n   - getInvoice 재호출 대신 캐시 활용\n3. src/app/layout.tsx: 기본 메타데이터 완성 (title template, description, openGraph)\n4. .env.example 파일 생성: 필요한 환경변수 목록 문서화\n   - NOTION_API_KEY, NOTION_DATABASE_ID, NOTION_ITEMS_DB_ID\n   - ADMIN_PASSWORD, JWT_SECRET",
+      "verificationCriteria": "1. npm run build 성공\n2. 견적서 페이지 title이 '견적서번호 | 견적서' 형식으로 표시\n3. vercel.json 보안 헤더 설정 확인\n4. .env.example 모든 필수 변수 포함",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    },
+    {
+      "id": "35e47d97-0264-4efb-8533-30692b3ed1ff",
+      "name": "최종 품질 검증 및 Vercel 배포",
+      "description": "프로덕션 배포 전 크로스 브라우저, 모바일 반응형, 인쇄(PDF) 품질을 검증하고 Vercel에 실제 배포한다.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "85a05c99-6ac7-4dbd-976d-8dc4bbcc9e3b"
+        }
+      ],
+      "createdAt": "2026-04-01T04:43:53.174Z",
+      "updatedAt": "2026-04-01T04:43:53.174Z",
+      "relatedFiles": [
+        {
+          "path": "src/app/dashboard/page.tsx",
+          "type": "REFERENCE",
+          "description": "대시보드 페이지"
+        },
+        {
+          "path": "src/app/invoice/[id]/page.tsx",
+          "type": "REFERENCE",
+          "description": "뷰어 페이지"
+        }
+      ],
+      "implementationGuide": "1. Playwright로 E2E 테스트\n   - 로그인 → 대시보드 → URL 복사 → 미리보기 → 로그아웃 전체 플로우\n   - 잘못된 invoice ID 접근 → 404 페이지\n2. 인쇄 품질 확인: /invoice/[id] 페이지에서 Ctrl+P → PDF 미리보기\n3. 모바일(375px) 반응형 최종 확인\n4. Vercel CLI 또는 GitHub 연동으로 배포\n5. 프로덕션 환경변수 설정 확인",
+      "verificationCriteria": "1. Vercel 프로덕션 URL에서 전체 기능 동작\n2. 인쇄 미리보기에서 한글 깨짐 없음\n3. 모바일 Chrome/Safari 정상 동작\n4. 잘못된 ID → 404 정상 표시",
+      "analysisResult": "노션 견적서 뷰어 웹앱 (Next.js 15.5.3 App Router). Phase 0~3 완료 상태. 인증(JWT+미들웨어), Notion API 연동(invoice DB + items DB relation), 대시보드/뷰어 UI 모두 구현됨. 남은 작업: Phase 1~3 고도화 + Phase 4 배포."
+    }
+  ]
+}
