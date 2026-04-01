@@ -17,11 +17,11 @@ async function InvoiceListSection() {
   return (
     <>
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-        <div className="space-y-1">
-          <h2 className="text-3xl font-extrabold tracking-tight">
+        <div className="space-y-1.5">
+          <h2 className="text-foreground text-3xl font-black tracking-tighter">
             견적서 목록
           </h2>
-          <p className="text-muted-foreground text-base">
+          <p className="text-muted-foreground text-sm font-medium">
             최근 발행된{' '}
             <span className="text-primary font-bold">{invoices.length}개</span>
             의 견적서를 관리하세요
