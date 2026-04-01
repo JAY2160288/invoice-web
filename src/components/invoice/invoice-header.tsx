@@ -23,7 +23,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
           <div className="bg-primary/10 text-primary inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase">
             Invoice
           </div>
-          <h1 className="text-foreground text-4xl font-black tracking-tight">
+          <h1 className="text-foreground text-4xl font-black tracking-tight leading-none">
             {invoice.title}
           </h1>
         </div>
@@ -32,17 +32,17 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         </div>
       </div>
 
-      <div className="border-muted/50 grid grid-cols-1 gap-10 border-y py-6 md:grid-cols-2">
+      <div className="border-muted/60 grid grid-cols-1 gap-10 border-y py-8 md:grid-cols-2">
         <div className="space-y-4">
           <div className="text-primary flex items-center gap-2">
             <Building2Icon className="h-5 w-5" />
-            <span className="text-xs font-black tracking-widest uppercase">
+            <span className="text-[10px] font-black tracking-[0.2em] uppercase">
               발행자
             </span>
           </div>
           <div className="space-y-1.5 pl-7">
-            <p className="text-xl font-bold">{invoice.senderName}</p>
-            <div className="text-muted-foreground flex items-center gap-2 text-sm">
+            <p className="text-xl font-bold text-foreground leading-none">{invoice.senderName}</p>
+            <div className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
               <MailIcon className="h-4 w-4" />
               <span>{invoice.senderContact}</span>
             </div>
@@ -52,38 +52,38 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
         <div className="space-y-4">
           <div className="text-primary flex items-center gap-2">
             <UserIcon className="h-5 w-5" />
-            <span className="text-xs font-black tracking-widest uppercase">
+            <span className="text-[10px] font-black tracking-[0.2em] uppercase">
               클라이언트
             </span>
           </div>
           <div className="space-y-1.5 pl-7">
-            <p className="text-xl font-bold">{invoice.clientName}</p>
-            <p className="text-muted-foreground text-sm">귀하</p>
+            <p className="text-xl font-bold text-foreground leading-none">{invoice.clientName}</p>
+            <p className="text-muted-foreground text-sm font-medium">귀하</p>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-8 pt-2">
         <div className="flex items-start gap-3">
-          <div className="bg-muted mt-0.5 rounded-lg p-2">
+          <div className="bg-muted/80 mt-0.5 rounded-lg p-2">
             <CalendarIcon className="text-muted-foreground h-4 w-4" />
           </div>
           <div className="space-y-1">
             <p className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
               발행일
             </p>
-            <p className="text-sm font-semibold">{invoice.issueDate}</p>
+            <p className="text-sm font-bold text-foreground">{invoice.issueDate}</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <div className="bg-muted mt-0.5 rounded-lg p-2">
+          <div className="bg-muted/80 mt-0.5 rounded-lg p-2">
             <CalendarIcon className="text-muted-foreground h-4 w-4" />
           </div>
           <div className="space-y-1">
             <p className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
               유효기간
             </p>
-            <p className="text-sm font-semibold">{invoice.dueDate}</p>
+            <p className="text-sm font-bold text-foreground">{invoice.dueDate}</p>
           </div>
         </div>
       </div>
