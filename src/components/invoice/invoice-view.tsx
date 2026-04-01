@@ -16,7 +16,7 @@ export function InvoiceView({ invoice }: InvoiceViewProps) {
         <InvoicePrintButton />
       </div>
 
-      <div className="border-muted/30 shadow-primary/5 relative space-y-10 overflow-hidden rounded-2xl border bg-white p-10 shadow-2xl sm:p-16">
+      <div className="invoice-light-forced border-muted/30 shadow-primary/5 relative space-y-10 overflow-hidden rounded-2xl border bg-white p-10 shadow-2xl sm:p-16">
         {/* Decorative corner accent */}
         <div className="bg-primary/5 pointer-events-none absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-bl-full" />
 
