@@ -23,7 +23,7 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
           <div className="bg-primary/10 text-primary inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-wider uppercase">
             Invoice
           </div>
-          <h1 className="text-foreground text-4xl font-black tracking-tight leading-none">
+          <h1 className="text-foreground text-4xl leading-none font-black tracking-tight">
             {invoice.title}
           </h1>
         </div>
@@ -41,7 +41,9 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             </span>
           </div>
           <div className="space-y-1.5 pl-7">
-            <p className="text-xl font-bold text-foreground leading-none">{invoice.senderName}</p>
+            <p className="text-foreground text-xl leading-none font-bold">
+              {invoice.senderName}
+            </p>
             <div className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
               <MailIcon className="h-4 w-4" />
               <span>{invoice.senderContact}</span>
@@ -57,7 +59,9 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             </span>
           </div>
           <div className="space-y-1.5 pl-7">
-            <p className="text-xl font-bold text-foreground leading-none">{invoice.clientName}</p>
+            <p className="text-foreground text-xl leading-none font-bold">
+              {invoice.clientName}
+            </p>
             <p className="text-muted-foreground text-sm font-medium">귀하</p>
           </div>
         </div>
@@ -72,7 +76,9 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             <p className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
               발행일
             </p>
-            <p className="text-sm font-bold text-foreground">{invoice.issueDate}</p>
+            <p className="text-foreground text-sm font-bold">
+              {invoice.issueDate}
+            </p>
           </div>
         </div>
         <div className="flex items-start gap-3">
@@ -83,7 +89,9 @@ export function InvoiceHeader({ invoice }: InvoiceHeaderProps) {
             <p className="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
               유효기간
             </p>
-            <p className="text-sm font-bold text-foreground">{invoice.dueDate}</p>
+            <p className="text-foreground text-sm font-bold">
+              {invoice.dueDate}
+            </p>
           </div>
         </div>
       </div>
