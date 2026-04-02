@@ -33,22 +33,3 @@ export interface InvoiceListItem {
   status: InvoiceStatus
   total: number
 }
-
-// Notion API raw 응답 타입 (Phase 3에서 실제 사용)
-export interface NotionInvoicePageProperties {
-  title: { title: Array<{ plain_text: string }> }
-  client_name: { rich_text: Array<{ plain_text: string }> }
-  issue_date: { date: { start: string } | null }
-  due_date: { date: { start: string } | null }
-  status: { select: { name: InvoiceStatus } | null }
-  tax_rate: { number: number | null }
-  notes: { rich_text: Array<{ plain_text: string }> }
-  sender_name: { rich_text: Array<{ plain_text: string }> }
-  sender_contact: { rich_text: Array<{ plain_text: string }> }
-}
-
-export interface ApiResponse<T> {
-  success: boolean
-  data?: T
-  error?: string
-}
