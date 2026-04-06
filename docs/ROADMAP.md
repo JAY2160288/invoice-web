@@ -1,16 +1,16 @@
-# 노션 견적서 뷰어 MVP 개발 로드맵
+# Notion 견적서 뷰어 개발 로드맵
 
 프리랜서/솔로 개발자가 Notion DB에서 견적서를 관리하고 클라이언트에게 웹 URL로 공유하는 서비스
 
 ## 개요
 
-노션 견적서 뷰어는 **견적서를 노션으로 관리하는 프리랜서 및 소규모 에이전시**를 위한 웹 기반 견적서 공유 도구로 다음 기능을 제공합니다:
+Notion 견적서 뷰어는 **견적서를 노션으로 관리하는 프리랜서 및 소규모 에이전시**를 위한 웹 기반 견적서 공유 도구로 다음 기능을 제공합니다:
 
-- **노션 데이터 연동**: Notion API를 통해 견적서 데이터를 실시간 조회 (F001)
-- **견적서 웹 뷰어**: 고유 URL 기반으로 견적서를 웹에서 렌더링하고 PDF 다운로드 지원 (F002, F003)
-- **견적서 목록 관리**: 발행자가 견적서 목록을 확인하고 클라이언트 공유 URL을 복사 (F004, F005)
-- **발행자 인증**: 패스워드 + JWT 쿠키 기반 단순 접근 제어 (F010)
-- **오류 처리**: 잘못된 견적서 ID 및 API 오류 시 안내 페이지 (F011)
+- **노션 데이터 연동**: Notion API를 통해 견적서 데이터를 실시간 조회
+- **견적서 웹 뷰어**: 고유 URL 기반으로 견적서를 웹에서 렌더링하고 PDF 다운로드 지원
+- **견적서 목록 관리**: 발행자가 견적서 목록을 확인하고 클라이언트 공유 URL을 복사
+- **발행자 인증**: 패스워드 + JWT 쿠키 기반 단순 접근 제어
+- **오류 처리**: 잘못된 견적서 ID 및 API 오류 시 안내 페이지
 
 ## 기술 스택
 
@@ -19,7 +19,6 @@
 | Framework   | Next.js 15.5.3 (App Router + Turbopack)     |
 | Language    | TypeScript 5, React 19.1.0                  |
 | Styling     | TailwindCSS v4 + shadcn/ui (new-york style) |
-| Forms       | React Hook Form 7.x + Zod                   |
 | Data Source | Notion API (`@notionhq/client`)             |
 | Auth        | jose (JWT) + httpOnly 쿠키                  |
 | PDF         | `window.print()` + `@media print` CSS       |
@@ -99,7 +98,7 @@
   - ✅ not-found.tsx / error.tsx 구성
   - ✅ 견적서 전용 404 페이지
 
-### Phase 2: 인증 시스템 구축 (PRD F010) ✅
+### Phase 2: 인증 시스템 구축 ✅
 
 - **Task 201: Server Action - 패스워드 검증 및 JWT 쿠키 발급** ✅ - 완료
   - ✅ `jose` 라이브러리 JWT 토큰 생성/검증 유틸리티 (`src/lib/auth.ts`)
@@ -113,7 +112,7 @@
   - ✅ 인증 상태에서 `/login` → `/dashboard` 리디렉션
   - ✅ 로그아웃 Server Action (`src/app/dashboard/actions.ts`)
 
-### Phase 3: Notion API 연동 및 핵심 기능 구현 (PRD F001, F002, F004) ✅
+### Phase 3: Notion API 연동 및 핵심 기능 구현 ✅
 
 - **Task 301: Notion API 클라이언트 및 데이터 조회 함수 구현** ✅ - 완료
   - ✅ `@notionhq/client@2` 클라이언트 초기화 (`src/lib/notion/client.ts`)
@@ -148,3 +147,27 @@
   - ✅ 모바일 반응형 고도화 (대시보드 카드 레이아웃 적용)
   - ✅ 인쇄(PDF) 출력 품질 및 디자인 고도화
   - ✅ 데이터 정확도 개선 (아이템 기반 합계 재계산 및 상세 설명 추가)
+
+### Phase 5: 관리자 기능 구축 등 고도화 ✅
+
+- **Task 501: 관리자 레이아웃 고도화** ✅ - 완료
+  - ✅ `DashboardHeader` 컴포넌트 UI 개선 (로고 영역 리디자인, 네비게이션 구조 정비)
+  - ✅ 관리자 전용 레이아웃 컴포넌트 분리 (`src/app/dashboard/layout.tsx` 도입)
+  - ✅ 헤더에 견적서 총 건수, 최근 발행일 등 요약 정보 표시
+  - ✅ 대시보드 페이지 상단 통계 카드 영역 추가 (총 견적서 수, 상태별 건수)
+  - ✅ 반응형 사이드바/헤더 전환 구조 검토 및 모바일 햄버거 메뉴 개선
+
+- **Task 502: 다크 모드 기능 완성** ✅ - 완료
+  - ✅ `ThemeToggle` 컴포넌트를 `DashboardHeader`에 연결 (로그아웃 버튼 좌측 배치)
+  - ✅ 견적서 뷰어 페이지(`/invoice/[id]`) 다크 모드 색상 대응 완성 (배경, 텍스트, 테이블 border)
+  - ✅ 인보이스 뷰어 각 섹션별 다크 모드 스타일 검증 (`invoice-header`, `invoice-items-table`, `invoice-summary`, `invoice-notes`)
+  - ✅ `@media print` 스타일에서 다크 모드 무시 처리 (인쇄 시 항상 라이트 모드 출력)
+  - ✅ 로그인 페이지 다크 모드 대응 확인 및 미세 조정
+  - ✅ Playwright MCP로 테마 전환 E2E 테스트 수행 (라이트/다크/시스템 모드 전환 검증)
+
+- **Task 503: 견적서 목록 링크 복사 UX 개선** ✅ - 완료
+  - ✅ `CopyUrlButton`에 shadcn/ui `Sonner` (toast) 연동하여 복사 완료 알림 표시
+  - ✅ 복사 성공/실패 시 toast 메시지 분기 처리 (Clipboard API 미지원 브라우저 대응)
+  - ✅ 복사 버튼 hover 시 URL 미리보기 툴팁 추가 (`Tooltip` 컴포넌트 활용)
+  - ✅ 복사된 URL에 견적서 제목을 포함한 공유 텍스트 포맷 적용 (예: `[견적서명] - URL`)
+  - ✅ Playwright MCP로 복사 기능 E2E 테스트 수행 (복사 동작, toast 표시, 버튼 상태 전환 검증)
