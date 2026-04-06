@@ -5,6 +5,7 @@ import { useTransition } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Container } from '@/components/layout/container'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { logoutAction } from '@/app/dashboard/actions'
 
 export function DashboardHeader() {
@@ -28,16 +29,19 @@ export function DashboardHeader() {
               견적서 매니저
             </h1>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            disabled={isPending}
-            className="hover:bg-destructive hover:text-destructive-foreground hover:border-destructive font-semibold transition-all active:scale-95"
-          >
-            <LogOutIcon className="mr-2 h-4 w-4" />
-            {isPending ? '로그아웃 중...' : '로그아웃'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              disabled={isPending}
+              className="hover:bg-destructive hover:text-destructive-foreground hover:border-destructive font-semibold transition-all active:scale-95"
+            >
+              <LogOutIcon className="mr-2 h-4 w-4" />
+              {isPending ? '로그아웃 중...' : '로그아웃'}
+            </Button>
+          </div>
         </div>
       </Container>
     </header>

@@ -95,7 +95,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
             </CardContent>
             <CardFooter className="bg-muted/20 border-muted/30 flex justify-between gap-2 border-t p-3">
               <div className="flex-1">
-                <CopyUrlButton invoiceId={invoice.id} />
+                <CopyUrlButton
+                  invoiceId={invoice.id}
+                  invoiceTitle={invoice.title}
+                />
               </div>
               <Button
                 variant="default"
@@ -163,7 +166,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
-                    <CopyUrlButton invoiceId={invoice.id} />
+                    <CopyUrlButton
+                      invoiceId={invoice.id}
+                      invoiceTitle={invoice.title}
+                    />
                     <Button
                       variant="ghost"
                       size="sm"

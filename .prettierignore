@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Task docs
 tasks/
+
+# Shrimp task manager data
+shrimp_data/

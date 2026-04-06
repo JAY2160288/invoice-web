@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState, useState } from 'react'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { EyeIcon, EyeOffIcon, LockIcon } from 'lucide-react'
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -30,7 +30,7 @@ export function LoginForm() {
       <CardHeader className="space-y-4 pt-10 pb-8">
         <div className="flex justify-center">
           <div className="bg-primary text-primary-foreground flex h-12 w-12 items-center justify-center rounded-xl">
-            <EyeIcon className="h-6 w-6" />
+            <LockIcon className="h-6 w-6" />
           </div>
         </div>
         <div className="space-y-1 text-center">
