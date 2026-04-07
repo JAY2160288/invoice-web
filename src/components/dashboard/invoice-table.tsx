@@ -16,6 +16,7 @@ import { formatCurrency } from '@/lib/utils'
 import type { InvoiceListItem } from '@/lib/types/invoice'
 import { CopyUrlButton } from './copy-url-button'
 import { InvoiceStatusBadge } from './invoice-status-badge'
+import { ShareEmailButton } from './share-email-button'
 
 import {
   Card,
@@ -94,8 +95,12 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
               </div>
             </CardContent>
             <CardFooter className="bg-muted/20 border-muted/30 flex justify-between gap-2 border-t p-3">
-              <div className="flex-1">
+              <div className="flex gap-1.5">
                 <CopyUrlButton
+                  invoiceId={invoice.id}
+                  invoiceTitle={invoice.title}
+                />
+                <ShareEmailButton
                   invoiceId={invoice.id}
                   invoiceTitle={invoice.title}
                 />
@@ -104,7 +109,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 variant="default"
                 size="sm"
                 asChild
-                className="shadow-primary/20 flex-1 font-bold shadow-sm"
+                className="shadow-primary/20 font-bold shadow-sm"
               >
                 <Link href={`/invoice/${invoice.id}`}>
                   <EyeIcon className="mr-1.5 h-3.5 w-3.5" />
@@ -167,6 +172,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
                     <CopyUrlButton
+                      invoiceId={invoice.id}
+                      invoiceTitle={invoice.title}
+                    />
+                    <ShareEmailButton
                       invoiceId={invoice.id}
                       invoiceTitle={invoice.title}
                     />
