@@ -171,3 +171,30 @@ Notion 견적서 뷰어는 **견적서를 노션으로 관리하는 프리랜서
   - ✅ 복사 버튼 hover 시 URL 미리보기 툴팁 추가 (`Tooltip` 컴포넌트 활용)
   - ✅ 복사된 URL에 견적서 제목을 포함한 공유 텍스트 포맷 적용 (예: `[견적서명] - URL`)
   - ✅ Playwright MCP로 복사 기능 E2E 테스트 수행 (복사 동작, toast 표시, 버튼 상태 전환 검증)
+
+### Phase 6: 이메일 공유 기능 추가
+
+- **Task 601: 이메일로 견적서 공유 기능**
+  - ⬜ `ShareEmailButton` Client Component 신규 생성 (`src/components/dashboard/share-email-button.tsx`)
+  - ⬜ `mailto:` 링크 방식 구현 (별도 서버/API 불필요)
+    - 클릭 시 기본 이메일 앱 열기
+    - 제목: `[견적서명] 견적서 공유`
+    - 본문 기본 템플릿: 정중한 안내 문구 포함
+
+      ```
+      안녕하세요.
+
+      요청하신 견적서를 보내드립니다.
+
+      [견적서명]
+      [URL]
+
+      감사합니다.
+      ```
+
+  - ⬜ UI 일관성 유지 — 기존 `CopyUrlButton`과 동일한 스타일 기준 적용
+    - 동일한 shadcn/ui Button `variant`, `size`
+    - 아이콘 크기 및 여백 통일
+    - Tooltip 사용 방식 동일 (`TooltipProvider > Tooltip > TooltipTrigger > TooltipContent`)
+  - ⬜ `InvoiceTable` 컴포넌트(`src/components/dashboard/invoice-table.tsx`)에 URL 복사 버튼 옆 배치
+  - ⬜ 모바일 반응형 레이아웃 유지 (버튼 2개 나란히 배치)
